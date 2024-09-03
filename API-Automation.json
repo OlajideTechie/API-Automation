@@ -1,0 +1,363 @@
+{
+	"info": {
+		"_postman_id": "38131af3-fe19-48d4-a582-e23610600a5f",
+		"name": "API Automation",
+		"description": "# Quick Start Guide\n\n## Step 1: Your API Access Key\n\nTo get started quickly, you need to fork the MarketStack Postman Collection. Simply click the button below to fork it.\n\n[<img src=\"https://run.pstmn.io/button.svg\">](https://god.gw.postman.com/run-collection/10131015-276c4312-f682-425d-b6b1-0f82c0a7f2b3?action=collection/fork)\n\n### Step 2: Get your API Access Key\n\n1. Go to the [Weatherstack](https://weatherstack.com/?utm_source=Postman&utm_medium=Referral) website and choose the right subscription plan for your particular project.\n2. Get your personal API Access Key on the [Dashboard](https://weatherstack.com/dashboard) to authenticate with the API. Keep it safe! You can reset it at any time in your Account Dashboard.\n    \n\n## Step 3: Make your first API call\n\nWeatherstack Postman collection contains all the endpoints supported by Weatherstack API.\n\n1. Current weather data\n2. Historical weather data\n3. Weather forecast\n4. Autocomplete/Location lookup",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24836717"
+	},
+	"item": [
+		{
+			"name": "Current Weather Location",
+			"item": [
+				{
+					"name": "Current Location",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Test to check if the response status code is 200",
+									"pm.test(\"Response status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Test to check if the response contains the required fields: request, location, and current",
+									"pm.test(\"Response has the required fields - request, location, and current\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData).to.have.property('request');",
+									"    pm.expect(responseData).to.have.property('location');",
+									"    pm.expect(responseData).to.have.property('current');",
+									"});",
+									"",
+									"// Test to validate that observation time is in the correct format (HH:MM AM/PM)",
+									"pm.test(\"Observation time is in a valid format\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.current.observation_time).to.match(/^\\d{2}:\\d{2} (AM|PM)$/, \"Observation time should be in HH:MM AM/PM format\");",
+									"});",
+									"",
+									"// Test to check if the weather icons array exists and is an array",
+									"pm.test(\"Weather icons array should exist and be an array\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.current.weather_icons).to.exist.and.to.be.an('array');",
+									"});",
+									"",
+									"",
+									"// Performance test: Check response size is within acceptable limits (e.g., under 5000 bytes)",
+									"pm.test(\"Response size is within acceptable limits\", function () {",
+									"    pm.expect(pm.response.size().total).to.be.below(5000); // adjust the size limit as needed",
+									"});",
+									"",
+									"// Test to ensure the response contains the Content-Type header",
+									"pm.test(\"Response must have the required header - Content-Type\", function () {",
+									"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.exist;",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.weatherstack.com/current?query=United Kingdom",
+							"protocol": "https",
+							"host": [
+								"api",
+								"weatherstack",
+								"com"
+							],
+							"path": [
+								"current"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "United Kingdom",
+									"description": "[Required] Use this parameter to pass a single location or multiple semicolon-separated location identifiers to the API. Learn more about the Query Parameter.\n"
+								}
+							]
+						},
+						"description": "\\`Current\\` endpoint let you fetch the weather stats of the metioned location in the \\`query\\` parameter."
+					},
+					"response": [
+						{
+							"name": "200 OK – Current Location",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.weatherstack.com/current?access_key={PASTE_YOUR_API_KEY_HERE}&query=New Delhi",
+									"protocol": "https",
+									"host": [
+										"api",
+										"weatherstack",
+										"com"
+									],
+									"path": [
+										"current"
+									],
+									"query": [
+										{
+											"key": "access_key",
+											"value": "{PASTE_YOUR_API_KEY_HERE}",
+											"description": "[Required] Specify your API access key, available in your account dashboard.\n"
+										},
+										{
+											"key": "query",
+											"value": "New Delhi",
+											"description": "[Required] Use this parameter to pass a single location or multiple semicolon-separated location identifiers to the API. Learn more about the Query Parameter.\n"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Mon, 18 Mar 2024 12:33:07 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; Charset=UTF-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-apilayer-transaction-id",
+									"value": "b9b7f0b7-406c-476a-ba48-4c158e7e772e"
+								},
+								{
+									"key": "access-control-allow-methods",
+									"value": "GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS"
+								},
+								{
+									"key": "access-control-allow-origin",
+									"value": "*"
+								},
+								{
+									"key": "x-request-time",
+									"value": "0.162"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Report-To",
+									"value": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=pDAibl%2Fnk7QXgvSnbrYs4%2BLGejv4WB6s1fqTGIl75zEsou6DTxy3Y1mPOPm88dc3BCLmxETP1B0TTf43OPmXcNbr8zGV%2BwTD1vS0eNW2MpAa%2FaIoGuNUJZno%2FRxjECOhhAXrVx7L\"}],\"group\":\"cf-nel\",\"max_age\":604800}"
+								},
+								{
+									"key": "NEL",
+									"value": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "86653fceadd7a738-IXC"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"request\": {\n        \"type\": \"City\",\n        \"query\": \"New Delhi, India\",\n        \"language\": \"en\",\n        \"unit\": \"m\"\n    },\n    \"location\": {\n        \"name\": \"New Delhi\",\n        \"country\": \"India\",\n        \"region\": \"Delhi\",\n        \"lat\": \"28.600\",\n        \"lon\": \"77.200\",\n        \"timezone_id\": \"Asia/Kolkata\",\n        \"localtime\": \"2024-03-18 18:01\",\n        \"localtime_epoch\": 1710784860,\n        \"utc_offset\": \"5.50\"\n    },\n    \"current\": {\n        \"observation_time\": \"12:31 PM\",\n        \"temperature\": 28,\n        \"weather_code\": 143,\n        \"weather_icons\": [\n            \"https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0006_mist.png\"\n        ],\n        \"weather_descriptions\": [\n            \"Haze\"\n        ],\n        \"wind_speed\": 11,\n        \"wind_degree\": 290,\n        \"wind_dir\": \"WNW\",\n        \"pressure\": 1012,\n        \"precip\": 0,\n        \"humidity\": 25,\n        \"cloudcover\": 0,\n        \"feelslike\": 26,\n        \"uv_index\": 7,\n        \"visibility\": 5,\n        \"is_day\": \"yes\"\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Location Identifiers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://api.weatherstack.com/current?query=40.7831,-73.9712",
+							"protocol": "https",
+							"host": [
+								"api",
+								"weatherstack",
+								"com"
+							],
+							"path": [
+								"current"
+							],
+							"query": [
+								{
+									"key": "query",
+									"value": "40.7831,-73.9712",
+									"description": "Pass latitude and longitude coordinates to the API and auto-detect the associated location.\n"
+								}
+							]
+						},
+						"description": "Aside from simply passing the name of a city, there are multiple other ways of passing a location to the API:\n\n| Definition | Example | Description |\n| --- | --- | --- |\n| Location Name | `query = New York` | The standard way of passing a location name to the API. |\n| UK/Canada/US ZIP Code | `query = 99501` | Pass a UK/Canada/US ZIP code to the API and auto-detect the associated location. |\n| Coordinates (Lat/Lon) | `query = 40.7831,-73.9712` | Pass latitude and longitude coordinates to the API and auto-detect the associated location. |\n| IP Address | `query = 153.65.8.20` | Pass an IP address to the API and auto-detect the associated location. |\n| IP Address (Auto-Fetch) | `query = fetch:ip` | Pass `fetch:ip` to the API in order to auto-detect the requester IP address and location. |"
+					},
+					"response": [
+						{
+							"name": "200 OK – Location Identifiers",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://api.weatherstack.com/current?access_key={PASTE_YOUR_API_KEY_HERE}&query=40.7831,-73.9712",
+									"protocol": "https",
+									"host": [
+										"api",
+										"weatherstack",
+										"com"
+									],
+									"path": [
+										"current"
+									],
+									"query": [
+										{
+											"key": "access_key",
+											"value": "{PASTE_YOUR_API_KEY_HERE}",
+											"description": "[Required] Specify your API access key, available in your account dashboard.\n"
+										},
+										{
+											"key": "query",
+											"value": "40.7831,-73.9712",
+											"description": "Pass latitude and longitude coordinates to the API and auto-detect the associated location.\n"
+										}
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Date",
+									"value": "Mon, 18 Mar 2024 13:00:35 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; Charset=UTF-8"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								},
+								{
+									"key": "x-apilayer-transaction-id",
+									"value": "9678357b-46f9-472b-96ee-ec65a6c1ed21"
+								},
+								{
+									"key": "access-control-allow-methods",
+									"value": "GET, HEAD, POST, PUT, PATCH, DELETE, OPTIONS"
+								},
+								{
+									"key": "access-control-allow-origin",
+									"value": "*"
+								},
+								{
+									"key": "x-request-time",
+									"value": "0.124"
+								},
+								{
+									"key": "CF-Cache-Status",
+									"value": "DYNAMIC"
+								},
+								{
+									"key": "Report-To",
+									"value": "{\"endpoints\":[{\"url\":\"https:\\/\\/a.nel.cloudflare.com\\/report\\/v4?s=8fZ2Yu1uWlHcoMH96zmD82vyt11GCaaUWcY8wZ2Q22PnQjxB%2BFHsk%2Fu%2FyyjcJ8NipR%2FsgvKXPp6BGd4L4ERBPcr8MsfFolBuaZCo6H0ropgCXpbQOzalZkxv0avFfDxrbBhul%2FRT\"}],\"group\":\"cf-nel\",\"max_age\":604800}"
+								},
+								{
+									"key": "NEL",
+									"value": "{\"success_fraction\":0,\"report_to\":\"cf-nel\",\"max_age\":604800}"
+								},
+								{
+									"key": "Server",
+									"value": "cloudflare"
+								},
+								{
+									"key": "CF-RAY",
+									"value": "8665680f89afa739-IXC"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "br"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"request\": {\n        \"type\": \"LatLon\",\n        \"query\": \"Lat 40.78 and Lon -73.97\",\n        \"language\": \"en\",\n        \"unit\": \"m\"\n    },\n    \"location\": {\n        \"name\": \"Guttenberg\",\n        \"country\": \"United States of America\",\n        \"region\": \"New Jersey\",\n        \"lat\": \"40.792\",\n        \"lon\": \"-74.004\",\n        \"timezone_id\": \"America/New_York\",\n        \"localtime\": \"2024-03-18 08:59\",\n        \"localtime_epoch\": 1710752340,\n        \"utc_offset\": \"-4.0\"\n    },\n    \"current\": {\n        \"observation_time\": \"12:59 PM\",\n        \"temperature\": 6,\n        \"weather_code\": 113,\n        \"weather_icons\": [\n            \"https://cdn.worldweatheronline.com/images/wsymbols01_png_64/wsymbol_0001_sunny.png\"\n        ],\n        \"weather_descriptions\": [\n            \"Sunny\"\n        ],\n        \"wind_speed\": 4,\n        \"wind_degree\": 297,\n        \"wind_dir\": \"WNW\",\n        \"pressure\": 1008,\n        \"precip\": 0,\n        \"humidity\": 45,\n        \"cloudcover\": 0,\n        \"feelslike\": 3,\n        \"uv_index\": 2,\n        \"visibility\": 16,\n        \"is_day\": \"yes\"\n    }\n}"
+						}
+					]
+				}
+			],
+			"description": "Current endpoint let you fetch the weather stats of the metioned location in the `query` parameter."
+		}
+	],
+	"auth": {
+		"type": "apikey",
+		"apikey": [
+			{
+				"key": "in",
+				"value": "query",
+				"type": "string"
+			},
+			{
+				"key": "value",
+				"value": "{{access_key}}",
+				"type": "string"
+			},
+			{
+				"key": "key",
+				"value": "access_key",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "access_key",
+			"value": "fc22697feeeddfd075c3fd860d0fd7c6",
+			"type": "string"
+		}
+	]
+}
